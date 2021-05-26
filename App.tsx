@@ -46,17 +46,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const Section: React.FC<{
+const darkMode = useColorScheme() === 'dark';
+
+type SectionProps = {
+  children: React.ReactNode;
   title: string;
-}> = ({ children, title }: { children: React.ReactNode, title: string }) => {
-  const isDarkMode = useColorScheme() === 'dark';
+};
+
+function Section({ children, title }: SectionProps): JSX.Element {
   return (
     <View style={styles.sectionContainer}>
       <Text
         style={[
           styles.sectionTitle,
           {
-            color: isDarkMode ? Colors.white : Colors.black,
+            color: darkMode ? Colors.white : Colors.black,
           },
         ]}
       >
@@ -66,7 +70,7 @@ const Section: React.FC<{
         style={[
           styles.sectionDescription,
           {
-            color: isDarkMode ? Colors.light : Colors.dark,
+            color: darkMode ? Colors.light : Colors.dark,
           },
         ]}
       >
@@ -74,28 +78,23 @@ const Section: React.FC<{
       </Text>
     </View>
   );
-};
+}
 
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
+function App(): JSX.Element {
+  const barStyle = darkMode ? 'light-content' : 'dark-content';
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: darkMode ? Colors.darker : Colors.lighter,
   };
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar barStyle={barStyle} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}
       >
         <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}
-        >
+        <View style={backgroundStyle}>
           <Section title="Step One">
             Edit
             {' '}
@@ -118,6 +117,6 @@ const App = () => {
       </ScrollView>
     </SafeAreaView>
   );
-};
+}
 
 export default App;
